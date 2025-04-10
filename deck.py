@@ -12,7 +12,10 @@ class Deck:
             for value in values:
                 self.deck.append(Card(suit, value))
 
-        random.shuffle(self.deck)
+        self.shuffle(self.deck)
+    
+    def shuffle(self, cards):
+        random.shuffle(cards)
 
     def draw(self):
         return self.deck.pop() if self.deck else None
