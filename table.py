@@ -1,4 +1,5 @@
 import random
+import copy
 from deck import Deck
 
 class Table:
@@ -7,6 +8,7 @@ class Table:
 
     def __init__(self):
         self.deck = Deck()
+        self.history = []
         self.foundation = {"♠️": [], "♥️": [], "♦️": [], "♣️": []}
         self.column = [[] for _ in range(7)]
         self.waste = []
@@ -35,6 +37,8 @@ class Table:
         print("------------------------------------------")
 
     def move_card_columns(self, from_col, to_col, num_cards = 1):
+        self.save()
+
         from_col = from_col - 1
         to_col = to_col - 1
 
@@ -72,6 +76,7 @@ class Table:
         return True
     
     def is_valid_move(self, card_column, target_column):
+        
         card_values = {"A": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "J": 11, "Q": 12, "K": 13}
 
         if (card_column.suit in ["♥️", "♦️"] and target_column.suit in ["♥️", "♦️"]) or (card_column.suit in ["♣️", "♠️"] and target_column.suit in ["♣️", "♠️"]):
@@ -83,6 +88,8 @@ class Table:
         return True
 
     def draw(self, level):
+        self.save()
+
         if not self.deck.deck:
             if not self.used:
                 print("All cards used")
@@ -105,6 +112,8 @@ class Table:
                     self.waste.append(card)
 
     def move_waste_column(self, column):
+        self.save()
+
         column = column - 1
         waste = self.waste[-1]
 
@@ -129,6 +138,8 @@ class Table:
         return True
     
     def move_waste_foundation(self):
+        self.save()
+
         card_values = {"A": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "J": 11, "Q": 12, "K": 13}
 
         if not self.waste:
@@ -152,6 +163,7 @@ class Table:
         self.foundation[card.suit].append(card)
 
     def move_table_foundation(self, column):
+        self.save()
         card_values = {"A": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "J": 11, "Q": 12, "K": 13}
 
         column = column - 1
@@ -179,6 +191,29 @@ class Table:
         if self.column[column]:
             self.column[column][-1].face_up = True
 
+    def save(self):
+        state = {
+            "deck": copy.deepcopy(self.deck),
+            "foundation": copy.deepcopy(self.foundation),
+            "column": copy.deepcopy(self.column),
+            "waste": copy.deepcopy(self.waste),
+            "used": copy.deepcopy(self.used)
+        }
+        self.history.append(state)
+        if len(self.history) > 3:
+            self.history.pop(0)
+
+    def undo(self):
+        if not self.history:
+            print("Brak ruchow do cofniecia")
+            return
+        
+        last_state = self.history.pop()
+        self.deck = last_state["deck"]
+        self.foundation = last_state["foundation"]
+        self.column = last_state["column"]
+        self.waste = last_state["waste"]
+        self.used = last_state["used"]
 
     def is_game_won(self):
         total = sum(len(pile) for pile in self.foundation.values())
