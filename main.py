@@ -2,13 +2,13 @@ from table import Table
 
 while True:
     table = Table()
-    level = input("tryb trudnosci:")
-    print("Jezeli potrzebujesz pomocy wpisz 'help'")
+    level = input("Tryb Trudnosci:")
+    print("Jezeli potrzebujesz pomocy wpisz 'pomoc'")
     count = 0
     while not table.is_game_won():
         table.print_columns()
         action = input("")
-        if "mv" in action:
+        if "ruch" in action:
             try:
                 count += 1
                 command = action.split()
@@ -25,10 +25,10 @@ while True:
                     print("Zły ruch")
             except:
                 print("blad")
-        elif action == "draw":
+        elif action == "pobierz":
             count += 1
             table.draw(level)
-        elif "mwt" in action:
+        elif "dobrane-tabela" in action:
             try:
                 count += 1
                 command = action.split()
@@ -43,10 +43,10 @@ while True:
                     continue
             except:
                 print("blad")
-        elif "mwf" == action:
+        elif "dobrane-zbior" == action:
             count += 1
             table.move_waste_foundation()
-        elif "mtf" in action:
+        elif "tabela-zbior" in action:
             try:
                 count += 1
                 command = action.split()
@@ -55,19 +55,19 @@ while True:
                 table.move_table_foundation(column)
             except:
                 print("blad")
-        elif action == "back":
+        elif action == "cofnij":
             count += 1
             table.undo()
-        elif action == "help":
+        elif action == "pomoc":
             print("Komendy do gry w pasjansa\n")
-            print("mv - przenosi karty z jedenj kolumny do drugie, uzycie 'mv (numer kolumny z ktorej przenosimy) (numer kolumny do ktorej przenosimy) (ile kart [opcjonalne])'\n")
-            print("draw - dobiera karte/karty na stos kart 'waste'\n")
-            print("mwt - przenosi karte ze stosu waste do kolumny, uzycie 'mwt (numer kolumny)'\n")
-            print("mwf - przenosi karte ze stosu waste na stos foundation\n")
-            print("mtf - przenosi karte z kolumny na stos foundation, uzycie 'mtf (numer kolumny z ktorej przenosimy)'\n")
-            print("back - cofa o jedne ruch")
+            print("ruch - przenosi karty z jedenj kolumny do drugie, uzycie 'ruch (numer kolumny z ktorej przenosimy) (numer kolumny do ktorej przenosimy) (ile kart [opcjonalne])'\n")
+            print("dobierz - dobiera karte/karty na stos kart 'Dobrane'\n")
+            print("dobrane-tabela - przenosi karte ze stosu Dobrane do kolumny, uzycie 'dobrane-tabela (numer kolumny)'\n")
+            print("dobrane-zbior - przenosi karte ze stosu Dobrane na stos zbioru kart\n")
+            print("tabela-zbior - przenosi karte z kolumny na stos zbioru kart, uzycie 'tabela-zbior (numer kolumny z ktorej przenosimy)'\n")
+            print("cofnij - cofa o jedne ruch")
         elif action == "end":
-            question = input("czy chcesz zaczac gre od nowa (tak/nie)?:")
+            question = input("czy chcesz harzaczac gre od nowa (tak/nie)?:")
             if question.lower() == "nie":
                 exit()
             elif question.lower() == "tak":

@@ -3,7 +3,7 @@ import copy
 from deck import Deck
 
 class Table:
-    suits = ["♠️", "♥️", "♦️", "♣️"]
+    suits = ["♠", "♥", "♦", "♣"]
     values = ["A"] + [i for i in range(2, 11)] + ["J", "Q", "K"]
 
     def __init__(self):
@@ -23,17 +23,40 @@ class Table:
         
         for card in self.deck.deck:
             card.face_up = True
+
     
     def print_columns(self):
-        print("\nWaste \t\t    Foundation")
+        print("\nDobrane                 Zbiór kart")
         waste_tab = self.waste[-3:] if self.waste else []
         waste = " ".join(str(card) for card in waste_tab)
-        foundation = " ".join(f"{suit}:{self.foundation[suit][-1].value if self.foundation[suit] else '__'}" for suit in self.foundation)
-        print(f"{waste}\t\t{foundation:^1}")
-        print("\n------------------------------------------")
-        for id, col in enumerate(self.column):
-            print(f"Kolumna {id + 1}: ", end="")
-            print(" ".join(str(card) for card in col))
+        foundation = []
+        for suit in self.foundation:
+            if self.foundation[suit]:
+                card_value = self.foundation[suit][-1].value
+            else:
+                card_value = '__'
+            kolor = suit.replace('\uFE0F', '')
+            foundation.append(f"{kolor}:{card_value}")
+        foundation_str = " ".join(foundation)
+        print(f"{waste:<18} {foundation_str:^1}")
+        print("\n" + "-" * 60)
+
+        print("".join(f"{i+1:^6}" for i in range(len(self.column))))
+        max_height = max(len(col) for col in self.column)
+
+        for row in range(max_height):
+            row_str = ""
+            for col in range(7):
+                if row < len(self.column[col]):
+                    card = self.column[col][row]
+                    if card.face_up:
+                        row_str += f"{str(card):^6}"
+                    else:
+                        row_str += f"{'xx':^6}"
+                else:
+                    row_str += " " * 6
+            print(row_str)
+
         print("------------------------------------------")
 
     def move_card_columns(self, from_col, to_col, num_cards = 1):
@@ -97,12 +120,12 @@ class Table:
             random.shuffle(self.used)
             self.deck.deck = self.used[:]
             self.used = []
-        if level == "easy":
+        if level == "latwy":
             if self.waste:
                 self.used.extend(self.waste)
                 self.waste = []
             self.waste.append(self.deck.draw())
-        elif level == "hard":
+        elif level == "trudny":
             if self.waste:
                 self.used.extend(self.waste)
                 self.waste = []
