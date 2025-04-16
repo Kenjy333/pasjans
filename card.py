@@ -9,8 +9,4 @@ class Card:
 
     def __str__(self):
         suit = self.suit.replace('\uFE0F', '')
-        return f"{suit}{self.value}" if self.face_up else "XX"
-    
-    def __eq__(self, other):
-        if isinstance(other, Card):
-            return self.suit == other.suit and self.value == other.value
+        return f"{suit}{self.value}" if self.face_up else "xx"

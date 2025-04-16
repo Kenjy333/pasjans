@@ -57,7 +57,7 @@ class Table:
                     row_str += " " * 6
             print(row_str)
 
-        print("------------------------------------------")
+        print("\n" + "-" * 60)
 
     def move_card_columns(self, from_col, to_col, num_cards = 1):
         self.save()
@@ -115,7 +115,7 @@ class Table:
 
         if not self.deck.deck:
             if not self.used:
-                print("All cards used")
+                print("Wszystkie karty zostaly dobrane")
                 return
             random.shuffle(self.used)
             self.deck.deck = self.used[:]

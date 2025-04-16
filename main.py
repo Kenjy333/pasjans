@@ -7,7 +7,7 @@ while True:
     count = 0
     while not table.is_game_won():
         table.print_columns()
-        action = input("")
+        action = input("").lower()
         if "ruch" in action:
             try:
                 count += 1
@@ -25,7 +25,7 @@ while True:
                     print("Zły ruch")
             except:
                 print("blad")
-        elif action == "pobierz":
+        elif action == "dobierz":
             count += 1
             table.draw(level)
         elif "dobrane-tabela" in action:
@@ -66,8 +66,8 @@ while True:
             print("dobrane-zbior - przenosi karte ze stosu Dobrane na stos zbioru kart\n")
             print("tabela-zbior - przenosi karte z kolumny na stos zbioru kart, uzycie 'tabela-zbior (numer kolumny z ktorej przenosimy)'\n")
             print("cofnij - cofa o jedne ruch")
-        elif action == "end":
-            question = input("czy chcesz harzaczac gre od nowa (tak/nie)?:")
+        elif action == "koniec":
+            question = input("czy chcesz zaczac gre od nowa (tak/nie)?:")
             if question.lower() == "nie":
                 exit()
             elif question.lower() == "tak":
@@ -78,6 +78,7 @@ while True:
         print("Wygrales")
         with open("ranking.txt", "r+") as f:
             f.write(f"Liczba ruchow: {count}\n")
+        with open("ranking.txt", "r") as f:
             print("----- RANKING -----")
             for text in f:
                 print("text\n")
